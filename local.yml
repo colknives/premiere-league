@@ -1,0 +1,30 @@
+version: '2'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: .docker/php/Dockerfile
+        image: premier-league-api:latest
+        container_name: premier-league-api
+        environment:
+            DB_CONNECTION: mysql
+            DB_PORT: 3306
+            DB_HOST: 172.23.0.1
+            DB_DATABASE: premier_league                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            APP_ENV: development
+            APP_KEY: base64:qS1JoSLAELbJS+jrobkLSufg1eIyLZmozWnif07QpzY=
+            APP_DEBUG: 1
+            APP_TIMEZONE: Asia/Manila
+            APP_URL: http://localhost:8080
+            CACHE_DRIVER: file
+            QUEUE_DRIVER: sync
+            SERVICE_NAME: premier-league
+        ports:
+        - 8055:80
+        volumes:
+        - .:/var/www/html 
+#volumes:
+#    mysql:
+#        driver: "local"
