@@ -2,7 +2,6 @@
 
 namespace App\Services\Players\Import;
 
-use Illuminate\Support\Facades\Log;
 use App\Microservices\PremierLeague\GetPlayerMicroservice;
 use App\Repositories\PlayerRepository;
 use Carbon\Carbon;
@@ -15,6 +14,12 @@ class ImportPlayerJson implements ImportPlayerInterface
 
 	protected $getPlayer;
 
+	/**
+	 * ImportPlayerXml __construct method
+	 * 
+     * @param App\Microservices\PremierLeague\GetPlayerMicroservice $getPlayer
+     * @param App\Repositories\PlayerRepository $playerRepository
+     */
 	public function __construct(
 		GetPlayerMicroservice $getPlayer,
 		PlayerRepository $playerRepository)
@@ -44,38 +49,9 @@ class ImportPlayerJson implements ImportPlayerInterface
 			return false;
 		}
 
-		$batch = [];
-		$successCount = 0;
-
 		foreach( $playerList as $playerInfo ){
-
-			//Get only needed fields and convert to array
-			$info = collect($playerInfo)->toArray();
-
-			//Prepare id and date values
-			$info['player_id'] = $info['id'];
-			$info['news_added'] = Carbon::parse($info['news_added'])->format('Y-m-d H:i:s');
-
-			//Remove id key
-			unset($info['id']);
-
-			$batch[] = $info;
-
-			//Once batch reached minimum players to insert / update, insert or update players
-			if( count($batch) == static::MINIMUM_PLAYERS ){
-				
-				$insertUpdate = $this->playerRepository
-									 ->batchInsertUpdate($batch);
-
-				//If there are issues while inserting / updating discontinue import
-				if(!$insertUpdate){
-					$batch = [];
-					continue;
-				}
-
-				$successCount = $successCount + count($batch);
-				$batch = [];
-			}
+			$insertUpdate = $this->playerRepository
+									 ->updateOrCreate($playerInfo);
 		}
 	}
 }

@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Models\Player as Model;
+use Carbon\Carbon;
 
 class PlayerRepository
 {
@@ -14,55 +14,6 @@ class PlayerRepository
 	{
 		$this->model = $model;
 	}
-
-	public function batchInsertUpdate($data)
-	{
-		$columns = array_keys($data[0]);
-		$fields = implode('`,`', $columns);
-
-		$insertValues = $this->prepareInserValues($data);
-		$updateValues = $this->prepareUpdateValues($fields, []);
-		$params = $this->prepareParams($data);
-
-		foreach($data as $datakey => $dataInfo){
-
-			foreach($dataInfo as $key => $value){
-				$data[$datakey][$key] = ( is_integer($value) )? (int) $value : "{$value}";
-			}
-		}
-
-		$query = "insert into players (`{$fields}`) values {$insertValues} on duplicate key update {$updateValues}";
-
-        DB::statement($query, $params);
-
-        return $query;
-
-	}
-
-	protected function prepareParams(array $rows)
-    {
-    	return collect($rows)->flatten()->toArray();
-    }
-
-	protected function prepareInserValues(array $rows)
-    {
-        $values = collect($rows)->reduce(function ($valuesString, $row) {
-            return $valuesString .= '(' . rtrim(str_repeat("?,", count($row)), ',') . '),';
-        }, '');
-
-        return rtrim($values, ',');
-    }
-
-	protected function prepareUpdateValues($columns, array $exclude)
-    {
-        $updateString = collect($columns)->reject(function ($column) use ($exclude) {
-            return in_array($column, $exclude);
-        })->reduce(function ($updates, $column) {
-            return $updates .= "`{$column}`=VALUES(`{$column}`),";
-        }, '');
-
-        return trim($updateString, ',');
-    }
 
 	public function updateOrCreate($data)
 	{
@@ -84,16 +35,16 @@ class PlayerRepository
 	        "event_points" => $data->event_points,
 	        "first_name" => $data->first_name,
 	        "form" => $data->form,
-	        "in_dreamteam" => $data->in_dreamteam,
+	        "in_dreamteam" => (boolean) $data->in_dreamteam,
 	        "news" => $data->news,
-	        "news_added" => $data->news_added,
+	        "news_added" => Carbon::parse($data->news_added)->format('Y-m-d H:i:s'),
 	        "now_cost" => $data->now_cost,
 	        "photo" => $data->photo,
 	        "points_per_game" => $data->points_per_game,
 	        "second_name" => $data->second_name,
 	        "selected_by_percent" => $data->selected_by_percent,
-	        "special" => $data->special,
-	        "squad_number" => $data->squad_number,
+	        "special" => (boolean) $data->special,
+	        "squad_number" => (integer) $data->squad_number,
 	        "status" => $data->status,
 	        "team" => $data->team,
 	        "team_code" => $data->team_code,
