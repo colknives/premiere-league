@@ -44,7 +44,7 @@ class PlayerRepository
 	        'total_points' => $data->total_points,
 	        'web_name' => $data->web_name,
 	        'photo' => $data->photo,
-	        'statistics' => json_encode($statistics)
+	        'statistics' => $statistics
 		]);
 	}
 
@@ -61,5 +61,17 @@ class PlayerRepository
 						DB::raw('CONCAT(first_name, " ", second_name) as full_name')
 					])
 					->paginate($perPage);
+	}
+
+	/**
+	 * View player details
+	 * 
+     * @param integer $id
+     */
+	public function viewPlayerDetails($id)
+	{
+		return $this->model
+		            ->where('player_id', $id)
+		            ->first();
 	}
 }

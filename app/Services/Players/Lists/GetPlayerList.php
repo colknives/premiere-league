@@ -14,7 +14,6 @@ class GetPlayerList extends AbstractService
 	/**
 	 * GetPlayerList __construct method
 	 * 
-	 * @param integer $page
      * @param App\Repositories\PlayerRepository $playerRepository
      */
 	public function __construct(PlayerRepository $playerRepository)

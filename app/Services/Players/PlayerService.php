@@ -8,6 +8,7 @@ use App\DataProviders\PremierLeague\GetPlayerDataProvider;
 use App\Services\Players\Lists\GetPlayerList;
 use App\Services\Players\Import\ImportPlayerJson;
 use App\Services\Players\Import\ImportPlayerXml;
+use App\Services\Players\View\ViewPlayerDetails;
 
 class PlayerService implements PlayerInterface {
 
@@ -53,5 +54,15 @@ class PlayerService implements PlayerInterface {
     public function getPlayerList() 
     {
         return (new GetPlayerList($this->playerRepository))->handle()->response();
+    }
+
+    /**
+     * View player details
+     *
+     * @return object
+     */
+    public function viewPlayerDetails($id) 
+    {
+        return (new ViewPlayerDetails($id, $this->playerRepository))->handle()->response();
     }
 }

@@ -38,4 +38,14 @@ class PlayerController extends Controller
             ]
         ], $getList->status);
     }
+
+    public function viewPlayer($id)
+    {
+        $details = $this->playerService->viewPlayerDetails($id);
+
+        return response()->json([
+            "message" => $details->message,
+            "player" => $details->player
+        ], $details->status); 
+    }
 }

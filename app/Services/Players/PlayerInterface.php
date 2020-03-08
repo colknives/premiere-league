@@ -9,4 +9,6 @@ interface PlayerInterface {
     public function importPlayerXml();
 
     public function getPlayerList();
+
+    public function viewPlayerDetails($id);
 }
