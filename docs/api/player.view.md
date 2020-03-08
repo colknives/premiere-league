@@ -1,4 +1,4 @@
-# View Player List
+# View Player Details
 
 **URL** : `player/view/{player_id}`
 
