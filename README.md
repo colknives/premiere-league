@@ -1,24 +1,43 @@
-# Lumen PHP Framework
+# Premier League API
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+## Introduction
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+This API demonstrates importing player data from premiere league data provider and ability to fetch all the listing and details of each player from the imported records.
 
-## Official Documentation
+## Prerequisite
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+1. [MySQL >= 15.1](https://www.mysql.com/)
+2. [PHP >= 7.2](https://www.php.net/)
+3. [Composer](https://getcomposer.org/)
 
-## Contributing
+## Install
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Download / Clone this repository
+2. Create a .env file and define your database information, you can use .env.example file as a basis
+3. Run the following command to install all the vendor needed:
+```bash
+composer install
+```
+4. Migrate needed table using the following command:
+```bash
+php artisan migrate
+```
 
-## Security Vulnerabilities
+## Data Importer
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Add the following command in your Cron Job
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
 
-## License
+## API Documentation
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Status Codes
+* `200` - Success
+* `404` - Entity not found
+* `405` - Invalid Method
+
+### Player API
+
+* [List - Player](docs/api/player.list.md) `GET /player/list`
+* [View - Player](docs/api/player.view.md) `GET /player/view/{player_id}`

@@ -30,6 +30,7 @@ class PlayerController extends Controller
                 "per_page" => $getList->list->per_page,
                 "current_page" => $getList->list->current_page,
                 "last_page" => $getList->list->last_page,
+                "first_page_url" => $getList->list->first_page_url,
                 "next_page_url" => $getList->list->next_page_url,
                 "prev_page_url" => $getList->list->prev_page_url,
                 "last_page_url" => $getList->list->last_page_url,

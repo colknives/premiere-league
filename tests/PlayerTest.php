@@ -24,6 +24,7 @@ class PlayerTest extends TestCase {
                 "per_page",
                 "current_page",
                 "last_page",
+                "first_page_url",
                 "next_page_url",
                 "prev_page_url",
                 "last_page_url",
