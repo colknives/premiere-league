@@ -4,7 +4,9 @@ namespace App\Services\Players\Import;
 
 use App\Microservices\PremierLeague\GetPlayerMicroservice;
 use App\Repositories\PlayerRepository;
+use App\Helpers\XmlJsonConverter;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ImportPlayerXml implements ImportPlayerInterface
 {
@@ -35,6 +37,10 @@ class ImportPlayerXml implements ImportPlayerInterface
      */
 	public function import()
 	{
+		//Sample xml response for testing
+		// $xml = file_get_contents(storage_path('test/bootstrap_statistics.xml'));
+
+		//Get data provider
 		$response = $this->getPlayer->call();
 
 		//If API access not successfull
@@ -47,51 +53,31 @@ class ImportPlayerXml implements ImportPlayerInterface
 			return false;
 		}
 
-		//Convert Xml to Array
-		$results = $this->convertXmlToArray($response->result);
+		//Convert Xml to Json
+		$xmlJsonConverter = new XmlJsonConverter($response->result);
+		$results = $xmlJsonConverter->convert()->getJson();
 
-		//Clean data from xml for possibility of null values
-		$results = $this->cleanXmlData($results['elements']['element']);
+		//Get elements and statistic field list
+		$playerList = collect($results->elements);
+		$playerStats = collect($results->element_stats)->pluck('name');
 
-		$playerList = collect($results);
-
-		// If players is not within minimum required number to save
+		//If players is not within minimum required number to save
 		if( $playerList->count() < static::MINIMUM_PLAYERS ){
 			return false;
 		}
 
 		foreach( $playerList as $playerInfo ){
-			$insertUpdate = $this->playerRepository
-									 ->updateOrCreate($playerInfo);
-		}
-	}
 
-	/**
-	 * Clean data from xml
-	 * 
-	 * @param $data
-     * @return json
-     */
-	private function cleanXmlData($data)
-	{
-		foreach( $data as $dataKey => $dataInfo ){
-			foreach( $dataInfo as $infoKey => $infoValue ){
-				$data[$dataKey][$infoKey] = ( is_array($infoValue) )? "" : $infoValue;
+			$statistics = [];
+
+			//Get all statistic info
+			foreach( $playerStats as $statsInfo ){
+				$statistics[$statsInfo] = $playerInfo->{$statsInfo};
 			}
+
+			//Update if exist or create player
+			$insertUpdate = $this->playerRepository
+									 ->updateOrCreate($playerInfo, $statistics);
 		}
-
-		return json_decode(json_encode($data));
-	}
-
-	/**
-	 * Convert xml to array
-	 * 
-	 * @param $xml
-     * @return array
-     */
-	private function convertXmlToArray($xml)
-	{
-		$xml = simplexml_load_string($xml);
-		return json_decode(json_encode($xml), TRUE);
 	}
 }

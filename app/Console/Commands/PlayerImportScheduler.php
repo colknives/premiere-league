@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Bus;
-use App\Services\Players\Import\ImportPlayerJson as ImportPlayer;
+use App\Services\Players\Import\ImportPlayerXml as ImportPlayer;
 
 class PlayerImportScheduler extends Command {
 

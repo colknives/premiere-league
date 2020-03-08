@@ -35,6 +35,7 @@ class ImportPlayerJson implements ImportPlayerInterface
      */
 	public function import()
 	{
+		//Get data provider
 		$response = $this->getPlayer->call();
 
 		//If API access not successfull
@@ -42,7 +43,9 @@ class ImportPlayerJson implements ImportPlayerInterface
 			return false;
 		}
 
+		//Get elements and statistic field list
 		$playerList = collect($response->result->elements);
+		$playerStats = collect($response->result->element_stats)->pluck('name');
 
 		//If players is not within minimum required number to save
 		if( $playerList->count() < static::MINIMUM_PLAYERS ){
@@ -50,8 +53,17 @@ class ImportPlayerJson implements ImportPlayerInterface
 		}
 
 		foreach( $playerList as $playerInfo ){
+
+			$statistics = [];
+
+			//Get all statistic info
+			foreach( $playerStats as $statsInfo ){
+				$statistics[$statsInfo] = $playerInfo->{$statsInfo};
+			}
+
+			//Update if exist or create player
 			$insertUpdate = $this->playerRepository
-									 ->updateOrCreate($playerInfo);
+									 ->updateOrCreate($playerInfo, $statistics);
 		}
 	}
 }

@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-
 use GuzzleHttp\Psr7\Response;
 
 class CurlServiceResponse
@@ -15,6 +14,11 @@ class CurlServiceResponse
 
     protected $result;
 
+    /**
+     * CurlServiceResponse __construct method
+     *
+     * @param Response $response
+     */
     public function __construct(Response $response = null)
     {
         $this->response = $response;
@@ -27,6 +31,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Get Response Message
+     *
      * @return mixed
      */
     public function getMessage()
@@ -35,6 +41,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Set Response Message
+     *
      * @param mixed $message
      * @return $this
      */
@@ -46,6 +54,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Get Response Status
+     *
      * @return mixed
      */
     public function getStatus()
@@ -54,6 +64,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Set Response Status
+     *
      * @param mixed $status
      * @return $this
      */
@@ -65,6 +77,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Get Response Result
+     *
      * @return mixed
      */
     public function getResult()
@@ -73,6 +87,8 @@ class CurlServiceResponse
     }
 
     /**
+     * Set Response Status
+     *
      * @param mixed $result
      * @return $this
      */
@@ -83,6 +99,11 @@ class CurlServiceResponse
         return $this;
     }
 
+    /**
+     * Get response
+     *
+     * @return object
+     */
     public function response()
     {
         return (object)[
