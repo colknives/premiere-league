@@ -11,6 +11,7 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(["prefix" => "player"], function() use ($router) {
+	$router->get("list", ["as" => "player.list", "uses" => "PlayerController@getPlayers"]);
+	$router->get("view/{id}", ["as" => "player.view", "uses" => "PlayerController@viewPlayer"]);
 });
