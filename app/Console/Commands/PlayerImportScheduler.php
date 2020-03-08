@@ -33,7 +33,7 @@ class PlayerImportScheduler extends Command {
     public function handle() {
         Log::info('Running Import Player command.');
 
-        return $this->playerService->importPlayerJson();
+        $this->playerService->importPlayerJson();
 
         Log::info('Done Importing Player');
     }
