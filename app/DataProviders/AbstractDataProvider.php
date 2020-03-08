@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Microservices;
+namespace App\DataProviders;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Response;
 
 use App\Helpers\CurlServiceResponse;
 
-class AbstractMicroservice
+class AbstractDataProvider
 {
 	protected $method = '';
 

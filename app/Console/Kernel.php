@@ -25,6 +25,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('dispatch:import_player')->everyThirtyMinutes();
+        $schedule->command('dispatch:import_player')->everyMinute();
     }
 }

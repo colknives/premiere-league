@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Microservices\PremierLeague;
+namespace App\DataProviders\PremierLeague;
 
-use App\Microservices\AbstractMicroservice;
+use App\DataProviders\AbstractDataProvider;
 
-class GetPlayerMicroservice extends AbstractMicroservice
+class GetPlayerDataProvider extends AbstractDataProvider
 {
 	protected $method = 'GET';
 

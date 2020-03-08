@@ -2,7 +2,7 @@
 
 namespace App\Services\Players\Import;
 
-use App\Microservices\PremierLeague\GetPlayerMicroservice;
+use App\DataProviders\PremierLeague\GetPlayerDataProvider;
 use App\Repositories\PlayerRepository;
 use Carbon\Carbon;
 
@@ -17,11 +17,11 @@ class ImportPlayerJson implements ImportPlayerInterface
 	/**
 	 * ImportPlayerXml __construct method
 	 * 
-     * @param App\Microservices\PremierLeague\GetPlayerMicroservice $getPlayer
+     * @param App\DataProviders\PremierLeague\GetPlayerDataProvider $getPlayer
      * @param App\Repositories\PlayerRepository $playerRepository
      */
 	public function __construct(
-		GetPlayerMicroservice $getPlayer,
+		GetPlayerDataProvider $getPlayer,
 		PlayerRepository $playerRepository)
 	{
 		$this->getPlayer = $getPlayer;
@@ -65,5 +65,7 @@ class ImportPlayerJson implements ImportPlayerInterface
 			$insertUpdate = $this->playerRepository
 									 ->updateOrCreate($playerInfo, $statistics);
 		}
+
+		return true;
 	}
 }
