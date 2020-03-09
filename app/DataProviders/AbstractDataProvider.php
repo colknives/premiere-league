@@ -26,6 +26,10 @@ class AbstractDataProvider
 
     protected $timeout = '60';
 
+    /**
+     * AbstractDataProvider __construct method
+     * 
+     */
     public function __construct()
     {
         $this->client = new Client([
@@ -34,6 +38,11 @@ class AbstractDataProvider
         ]);
     }
 
+    /**
+     * Initiate request call to data provider
+     * 
+     * @return object $response
+     */
 	public function call()
 	{
 		try {
@@ -65,6 +74,11 @@ class AbstractDataProvider
         }
 	}
 
+    /**
+     * Process failed response
+     * 
+     * @return object response
+     */
 	protected function failedResponse($hasResponse, $e)
     {
         if ($hasResponse) {
@@ -79,6 +93,11 @@ class AbstractDataProvider
         return $this->requestTimeout();
     }
 
+    /**
+     * Process success response
+     * 
+     * @return object response
+     */
     protected function successResponse(Response $response)
     {
         $response = new CurlServiceResponse($response);
@@ -88,7 +107,11 @@ class AbstractDataProvider
         return $response->response();
     }
 
-
+    /**
+     * Process timeout
+     * 
+     * @return object response
+     */
     private function requestTimeout()
     {
         $response = new CurlServiceResponse();
@@ -98,11 +121,21 @@ class AbstractDataProvider
         return $response->response();
     }
 
+    /**
+     * Get timeout value
+     * 
+     * @return integer $timeout
+     */
     private function getTimeout() 
     {
         return $this->timeout;
     }
 
+    /**
+     * Get base url
+     * 
+     * @return string $baseUrl
+     */
     private function getBaseUrl() {
 
         if ($this->baseUrl == null) {

@@ -16,7 +16,7 @@ class PlayerController extends Controller
     /**
      * Get player list
      *
-     * @param integer $page
+     * @return object $response
      */
     public function getPlayers() 
     {
@@ -40,6 +40,12 @@ class PlayerController extends Controller
         ], $getList->status);
     }
 
+    /**
+     * View player details
+     *
+     * @param integer $id
+     * @return object $response
+     */
     public function viewPlayer($id)
     {
         $details = $this->playerService->viewPlayerDetails($id);
